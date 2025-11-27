@@ -3,11 +3,13 @@ import express from "express"
 import dotenv from "dotenv"
 import authRouter from "./routers/authRoute.js"
 import path from "path"
+import {dbConnect} from "./lib/database.js"
 
 dotenv.config();
 
 const PORT = process.env.PORT||3000;
 const app = express();
+app.use(express.json());
 const __dirname = path.resolve();
 
 app.get("/ass", (req, res)=>{
@@ -28,4 +30,5 @@ if(process.env.NODE_ENV === "production"){
 
 app.listen(PORT, ()=>{
     console.log("app listen on the port "+PORT);
+    dbConnect();
 })
