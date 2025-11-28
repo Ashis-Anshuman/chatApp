@@ -1,6 +1,9 @@
 import User from "../models/userModel.js";
 import { generateToken } from "../lib/webToken.js";
 import bcrypt from "bcryptjs";
+import { sendWelcomeEmail } from "../email/emailHandler.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const signUp = async (req, res)=>{
     const {fullName, email, password} = req.body;
@@ -35,24 +38,32 @@ export const signUp = async (req, res)=>{
             password: hashPass
         });
         if(newUser){
+            const savedUser = await newUser.save();
             generateToken(newUser._id, res)  //webtoken generated
-            newUser.save();
 
-            return res.status(201).json({
+            
+            res.status(201).json({
                 message: "User has created",
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 email: newUser.email
             })
+            
+            try {
+                console.log("fgdgf")
+                await sendWelcomeEmail(savedUser.fullName, savedUser.email, process.env.CLINT_URL);
+            } catch (error) {
+                console.error("unable to send email", error)
+            }
+            
 
         }else{
             return res.status(400).json({message:"Invalid user data"})
         }
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({message:"Internal server error"});
     }
 
-    
 }

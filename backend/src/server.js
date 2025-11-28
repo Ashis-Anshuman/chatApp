@@ -29,6 +29,6 @@ if(process.env.NODE_ENV === "production"){
 }
 
 app.listen(PORT, ()=>{
-    console.log("app listen on the port "+PORT);
     dbConnect();
+    console.log("app listen on the port "+PORT);
 })
