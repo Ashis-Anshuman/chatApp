@@ -3,6 +3,7 @@ import { generateToken } from "../lib/webToken.js";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../email/emailHandler.js";
 import dotenv from "dotenv";
+import { error } from "console";
 dotenv.config();
 
 export const signUp = async (req, res)=>{
@@ -50,12 +51,10 @@ export const signUp = async (req, res)=>{
             })
             
             try {
-                console.log("fgdgf")
-                await sendWelcomeEmail(savedUser.fullName, savedUser.email, process.env.CLINT_URL);
+                // await sendWelcomeEmail(savedUser.fullName, savedUser.email, process.env.CLINT_URL);  //sending succesfully signup email
             } catch (error) {
                 console.error("unable to send email", error)
             }
-            
 
         }else{
             return res.status(400).json({message:"Invalid user data"})
@@ -66,4 +65,41 @@ export const signUp = async (req, res)=>{
         res.status(500).json({message:"Internal server error"});
     }
 
+}
+
+
+export const login = async (req, res)=>{
+    const {email, password} = req.body;
+
+    console.log(email);
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!regex.test(email)){
+            return res.status(400).json({message : "Invalid email"});
+        }
+
+    const loginUser = await User.findOne({email});
+    try {
+        if(loginUser){
+            console.log("email sucess");
+            // const salt = await bcrypt.genSalt(10);
+            try {
+                const isMatch = await bcrypt.compare(password, loginUser.password);
+                if(isMatch){
+                    return res.status(200).json({message: "login sucessfully"})
+                }else{
+                    return res.status(401).json({message: "Incorrect password"})
+                }
+            } catch (error) {
+                console.error("unable to compare password", error)
+            }
+            
+        }else{
+            return res.status(401).json({message: "Invalid email"})
+        }
+        
+    } catch (error) {
+        console.error("unable to login", error)
+        res.status(500).json({message: "Internal server error"})
+    }
 }
