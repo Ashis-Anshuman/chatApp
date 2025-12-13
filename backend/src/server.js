@@ -1,15 +1,17 @@
 // const express = require("express");
-import express from "express"
-import dotenv from "dotenv"
-import authRouter from "./routers/authRoute.js"
-import path from "path"
-import {dbConnect} from "./lib/database.js"
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import authRouter from "./routers/authRoute.js";
+import path from "path";
+import {dbConnect} from "./lib/database.js";
 
 dotenv.config();
 
 const PORT = process.env.PORT||3000;
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 const __dirname = path.resolve();
 
 app.get("/ass", (req, res)=>{

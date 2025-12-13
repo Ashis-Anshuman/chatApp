@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../email/emailHandler.js";
 import dotenv from "dotenv";
 import { error } from "console";
+import { measureMemory } from "vm";
+import cloudinary from "../lib/cloudinary.js";
 dotenv.config();
 
 export const signUp = async (req, res)=>{
@@ -82,24 +84,59 @@ export const login = async (req, res)=>{
     try {
         if(loginUser){
             console.log("email sucess");
-            // const salt = await bcrypt.genSalt(10);
             try {
                 const isMatch = await bcrypt.compare(password, loginUser.password);
-                if(isMatch){
-                    return res.status(200).json({message: "login sucessfully"})
-                }else{
-                    return res.status(401).json({message: "Incorrect password"})
+                if(!isMatch){
+                    return res.status(401).json({message: "Incorrect email or password"})
                 }
+                generateToken(loginUser._id, res);
+
+                return res.status(200).json({
+                    message: "login sucessfully",
+                    _id: loginUser._id,
+                    fullName: loginUser.fullName,
+                    email: loginUser.email
+                })
             } catch (error) {
                 console.error("unable to compare password", error)
             }
             
         }else{
-            return res.status(401).json({message: "Invalid email"})
+            return res.status(401).json({message: "Incorrect email or password"})
         }
         
     } catch (error) {
         console.error("unable to login", error)
         res.status(500).json({message: "Internal server error"})
+    }
+}
+
+export const logout = async (req, res)=>{
+    try{
+        res.cookie("jwt_token", "", {
+        maxAge:0,
+        })
+        res.status(200).json({message: "Logout sucessfully"});
+    }catch(error){
+        console.error("unable to logout", error)
+        res.status(500).json({message: "Internal server error"});
+    }
+    
+}
+
+export const updateProfile = async (req, res)=>{
+    try {
+        const {profilePic}= req.body;
+        if(!profilePic){return res.status(404).json({message: "No content"})};
+        
+        const userId = req.user._id;
+        const uploadPic = await cloudinary.uploader.upload(profilePic);
+
+        const updateUser = await User.findByIdAndUpdate(userId, {profilePic:uploadPic.secure_url}, {new:true});
+
+        res.status(200).json({message:"Updated succesfully"});
+    } catch (error) {
+        console.error("unable to update profile", error);
+        res.status(500).json({message: "Internal server error"});
     }
 }
