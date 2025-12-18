@@ -15,7 +15,7 @@ app.use(cookieParser());
 const __dirname = path.resolve();
 
 app.get("/ass", (req, res)=>{
-    res.send("fdjjdh");
+    res.send("fdjjdh"); 
 })
 
 app.use("/api/auth", authRouter)
