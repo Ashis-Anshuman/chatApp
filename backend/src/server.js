@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routers/authRoute.js";
+import messageRouter from "./routers/messageRouter.js";
 import path from "path";
 import {dbConnect} from "./lib/database.js";
 
@@ -18,7 +19,8 @@ app.get("/ass", (req, res)=>{
     res.send("fdjjdh"); 
 })
 
-app.use("/api/auth", authRouter)
+app.use("/api/auth", authRouter);
+app.use("/api/messages", messageRouter);
 
 
 //for deployement

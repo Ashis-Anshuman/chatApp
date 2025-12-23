@@ -50,12 +50,12 @@ export const signUp = async (req, res)=>{
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 email: newUser.email
-            })
+            });
             
             try {
-                // await sendWelcomeEmail(savedUser.fullName, savedUser.email, process.env.CLINT_URL);  //sending succesfully signup email
+                await sendWelcomeEmail(savedUser.fullName, savedUser.email, process.env.CLINT_URL);  //sending succesfully signup email
             } catch (error) {
-                console.error("unable to send email", error)
+                console.error("unable to send email", error);
             }
 
         }else{
@@ -83,7 +83,6 @@ export const login = async (req, res)=>{
     const loginUser = await User.findOne({email});
     try {
         if(loginUser){
-            console.log("email sucess");
             try {
                 const isMatch = await bcrypt.compare(password, loginUser.password);
                 if(!isMatch){
@@ -102,12 +101,12 @@ export const login = async (req, res)=>{
             }
             
         }else{
-            return res.status(401).json({message: "Incorrect email or password"})
+            return res.status(401).json({message: "Incorrect email or password"});
         }
         
     } catch (error) {
-        console.error("unable to login", error)
-        res.status(500).json({message: "Internal server error"})
+        console.error("unable to login", error);
+        res.status(500).json({message: "Internal server error"});
     }
 }
 

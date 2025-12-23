@@ -15,7 +15,7 @@ router.post("/logout", arcjetProtect, logout);
 
 router.put("/updateProfile", arcjetProtect, protectRoute, updateProfile);
 router.get("/check",protectRoute, (req, res)=>{
-    // res.status(200).json(req.user);
     res.status(200).json({message: "Refreshed"});
 });
+
 export default router;
