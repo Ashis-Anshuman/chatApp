@@ -6,12 +6,14 @@ import authRouter from "./routers/authRoute.js";
 import messageRouter from "./routers/messageRouter.js";
 import path from "path";
 import {dbConnect} from "./lib/database.js";
+import cors from "cors";
 
 dotenv.config();
 
 const PORT = process.env.PORT||3000;
 const app = express();
 app.use(express.json());
+app.use(cors({origin: process.env.CLIENT_URL, credentials: true}))
 app.use(cookieParser());
 const __dirname = path.resolve();
 
