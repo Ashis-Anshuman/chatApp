@@ -2,13 +2,14 @@ import { create } from 'zustand';
 import {apiInstance} from '../lib/axios';
 import toast from 'react-hot-toast';
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+// const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
 export const useUserAuthStore = create((set)=>({
     authUser: null,
     isCheckingAuth: true,
     isSigningUp: false,
     isLoggingIn: false,
+    isLoggingOut: false,
 
     checkAuth: async ()=>{
         try {
@@ -53,6 +54,19 @@ export const useUserAuthStore = create((set)=>({
             
         }finally{
             set({isLoggingIn:false});
+        }
+    },
+
+    logout: async ()=>{
+        try {
+            await apiInstance.post('/auth/logout');
+            set({authUser:null});
+
+            toast.success("Logout Successfully");
+
+        } catch (error) {
+            console.error("Unable to logout", error);
+            toast.error(error.response.data.message);
         }
     }
 }));
