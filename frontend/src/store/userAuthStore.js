@@ -6,10 +6,13 @@ import toast from 'react-hot-toast';
 
 export const useUserAuthStore = create((set)=>({
     authUser: null,
+    pendingEmail: null,
     isCheckingAuth: true,
     isSigningUp: false,
     isLoggingIn: false,
     isLoggingOut: false,
+    showOtp: false,
+    isValidingOtp: false,
 
     checkAuth: async ()=>{
         try {
@@ -26,16 +29,16 @@ export const useUserAuthStore = create((set)=>({
     },
 
     signUp: async (data)=>{
-        set({isSigningUp:true});
+        set({isSigningUp:true,
+            pendingEmail: data.email
+        });
         try {
             const res = await apiInstance.post('/auth/signUp', data);
             console.log(data);
-            set({authUser: res.data});
-
-            toast.success("SignUp successfully!");
+            set({showOtp:true});
+            toast.success("Verify your Email");
             
         } catch (error) {
-            console.error("Error during signUp:", error);
             toast.error(error.response.data.message);
         }finally{
             set({isSigningUp:false});
@@ -51,7 +54,6 @@ export const useUserAuthStore = create((set)=>({
             toast.success("Login successfully!");
         } catch (error) {
             toast.error(error.response.data.message);
-            
         }finally{
             set({isLoggingIn:false});
         }
@@ -65,8 +67,28 @@ export const useUserAuthStore = create((set)=>({
             toast.success("Logout Successfully");
 
         } catch (error) {
-            console.error("Unable to logout", error);
             toast.error(error.response.data.message);
+        }
+    },
+
+    updateProfile: async (data)=>{
+        
+    },
+
+    verifyOtp: async (data)=>{
+        set({isValidingOtp: true});
+        try {
+            console.log(data);
+            const res = await apiInstance.post('/auth/verifyEmail', data);
+            set({pendingEmail:null,
+                authUser: res.data
+            });
+
+            toast.success("OTP Verified");
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }finally{
+            set({isValidingOtp: false});
         }
     }
 }));

@@ -29,8 +29,9 @@ const LoginPage = () => {
   };
 
   return (
+    <div className="min-h-{98vh} flex items-center justify-center px-4">
     <BorderAnimation>
-      <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 overflow-hidden rounded-3xl bg-slate-900/40 backdrop-blur-2xl shadow-2xl shadow-blue-500/10">
+    <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 overflow-hidden rounded-3xl bg-slate-900/40 backdrop-blur-2xl shadow-2xl shadow-blue-500/10">
 
         {/* Left Panel */}
         <div className="hidden lg:flex lg:col-span-4 bg-blue-600/10 p-10 flex-col justify-between relative overflow-hidden">
@@ -166,6 +167,7 @@ const LoginPage = () => {
         </div>
       </div>
     </BorderAnimation>
+    </div>
   );
 };
 
