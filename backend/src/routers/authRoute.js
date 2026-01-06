@@ -1,5 +1,5 @@
 import express from "express"
-import { signUp, login, logout, updateProfile} from "../controller/authController.js"; 
+import { signUp, login, logout, updateProfile, verifyOtp} from "../controller/authController.js"; 
 import {protectRoute} from "../middleware/authMiddleware.js";
 import { arcjetProtect } from "../middleware/arcjetMiddleware.js";
 
@@ -12,6 +12,7 @@ router.get("/test", arcjetProtect, (req, res)=>{
 router.post("/signUp", arcjetProtect, signUp);
 router.post("/login", arcjetProtect, login);
 router.post("/logout", arcjetProtect, logout);
+router.post("/verifyEmail", arcjetProtect, verifyOtp);
 
 router.put("/updateProfile", arcjetProtect, protectRoute, updateProfile);
 router.get("/check",protectRoute, (req, res)=>{
