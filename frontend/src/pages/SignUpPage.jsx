@@ -22,7 +22,7 @@ const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const success = signUp(formData);
+    await signUp(formData);
 
   };
 
@@ -31,7 +31,7 @@ const SignUpPage = () => {
 
   console.log("OTP:", otp);
 
-  verifyOtp({
+  await verifyOtp({
     email: pendingEmail,
     otpCode: otp
   });

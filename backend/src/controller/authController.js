@@ -145,7 +145,7 @@ export const updateProfile = async (req, res)=>{
 
         const updateUser = await User.findByIdAndUpdate(userId, {profilePic:uploadPic.secure_url}, {new:true});
 
-        res.status(200).json({message:"Updated succesfully"});
+        res.status(200).json(updateUser);
     } catch (error) {
         console.error("unable to update profile", error);
         res.status(500).json({message: "Internal server error"});
