@@ -1,20 +1,34 @@
 import React, {useRef, useState} from 'react';
-import { Volume2, LogOut, VolumeX } from 'lucide-react';
+import { Volume2, LogOut, VolumeX, LoaderIcon } from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 import { useUserAuthStore } from '../store/userAuthStore';
 
 const mouseClickSound = new Audio('/sounds/mouse-click.mp3');
 
 function ProfileHeader() {
-  const {logout, authUser, updateProfile} = useUserAuthStore();
-  const {selectedImage, setSelectedImage} = useState(null);
+  const {logout, authUser, updateProfile, isUpdatingProfile} = useUserAuthStore();
   const {toogleSound, isSoundEnabled} = useChatStore();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const fileInputRef = useRef(null);
 
   const handelImageUpload = (e)=>{
-    
-  }
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = async ()=>{
+      console.log("y");
+      const base64Image = reader.result;
+      setSelectedImage(base64Image);
+      const res = await updateProfile({profilePic: base64Image});
+      if(!res){
+        setSelectedImage(null);
+      }
+    };
+  };
 
   const handelLogout = ()=>{
     logout();
@@ -23,16 +37,18 @@ function ProfileHeader() {
     <div className='p-4 flex items-center justify-between border-b border-slate-800 '>
       <div className="flex items-center gap-3">
         <div className="avatar online">
-          <input type="file" ref={fileInputRef} className='hidden' onClick={handelImageUpload} />
 
           <button className='size-14 rounded-full relative group overflow-hidden ' onClick={() => fileInputRef.current.click()}>
-            <img src={selectedImage || authUser.profilePic || "/avatar.png"} alt="Profile Pic" className="size-full object-cover" />
+          
+            {isUpdatingProfile ? <LoaderIcon size={16} className="ml-2 animate-spin inline-block"/> :<img src={selectedImage || authUser.profilePic || "/avatar.png"} alt="Profile Pic" className="size-full object-cover" />}
 
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                 <span className="text-white text-xs">Change</span>
             </div>
 
           </button>
+
+          <input type="file" accept='image/*' ref={fileInputRef} className='hidden' onChange={handelImageUpload} />
 
         </div>
         <div>
