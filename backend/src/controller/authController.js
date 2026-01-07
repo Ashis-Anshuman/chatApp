@@ -139,11 +139,15 @@ export const updateProfile = async (req, res)=>{
     try {
         const {profilePic}= req.body;
         if(!profilePic){return res.status(404).json({message: "No content"})};
+
+        if (req.user.profilePicPublicId) {
+            await cloudinary.uploader.destroy(req.user.profilePicPublicId);
+        }
         
         const userId = req.user._id;
-        const uploadPic = await cloudinary.uploader.upload(profilePic);
+        const uploadPic = await cloudinary.uploader.upload(profilePic, {folder: "profile"});
 
-        const updateUser = await User.findByIdAndUpdate(userId, {profilePic:uploadPic.secure_url}, {new:true});
+        const updateUser = await User.findByIdAndUpdate(userId, {profilePic:uploadPic.secure_url, profilePicPublicId: uploadPic.public_id}, {new:true});
 
         res.status(200).json(updateUser);
     } catch (error) {
