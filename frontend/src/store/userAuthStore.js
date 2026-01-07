@@ -13,6 +13,7 @@ export const useUserAuthStore = create((set)=>({
     isLoggingOut: false,
     showOtp: false,
     isValidingOtp: false,
+    isUpdatingProfile: false,
 
     checkAuth: async ()=>{
         try {
@@ -72,12 +73,16 @@ export const useUserAuthStore = create((set)=>({
     },
 
     updateProfile: async (data)=>{
+        set({isUpdatingProfile: true});
+        console.log("data");
         try {
             const res = await apiInstance.put('/auth/updateProfile', data);
             set({authUser: res.data});
             toast.success("Successfully Update the profile");
         } catch (error) {
-            toast.error(error.data.response.message);
+            toast.error(error.response.data.message);
+        }finally{
+            set({isUpdatingProfile: false});
         }
     },
 
