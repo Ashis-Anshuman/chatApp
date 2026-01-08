@@ -38,7 +38,7 @@ function ProfileHeader() {
       <div className="flex items-center gap-3">
         <div className="avatar online">
 
-          <button className='size-14 rounded-full relative group overflow-hidden ' onClick={() => fileInputRef.current.click()}>
+          <button disabled={isUpdatingProfile} className='size-14 rounded-full relative group overflow-hidden ' onClick={() => fileInputRef.current.click()}>
           
             {isUpdatingProfile ? <LoaderIcon size={16} className="ml-2 animate-spin inline-block"/> :<img src={selectedImage || authUser.profilePic || "/avatar.png"} alt="Profile Pic" className="size-full object-cover" />}
 

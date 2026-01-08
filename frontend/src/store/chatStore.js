@@ -8,7 +8,7 @@ export const useChatStore = create((set, get)=>({
     allContacts: [],
     isUsersLoading: false,
     isChatsLoading: false,
-    selectedUser: true,
+    selectedUser: null,
     activeTab: "chats",
     isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) === true,
 
@@ -21,6 +21,8 @@ export const useChatStore = create((set, get)=>({
     setActiveTab: (tab)=>{
         set({activeTab: tab});
     },
+
+    setSelectedUser: (selectedUser) => set({ selectedUser }),
 
     getAllContacts: async ()=>{
         set({isUsersLoading: true});
@@ -37,7 +39,7 @@ export const useChatStore = create((set, get)=>({
     getAllChatPatners: async ()=>{
         set({isUsersLoading: false});
         try {
-            const res = await apiInstance.get('/message/chats');
+            const res = await apiInstance.get('/messages/chats');
             set({chats: res.data})
         } catch (error) {
             toast.error(error.response.data.message);
