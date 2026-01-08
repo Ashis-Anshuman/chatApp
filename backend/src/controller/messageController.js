@@ -23,7 +23,6 @@ export const getChatPatners = async (req, res)=>{
                 {receiverId:myUserId}
             ],
         }).select(["-text", "-image"]);
-        console.log(chats);
         
         const chatPatnersID = [
             ...new Set(
@@ -32,8 +31,6 @@ export const getChatPatners = async (req, res)=>{
                 )
             )
         ];
-
-        console.log(chatPatnersID);
 
         const chatPatners = await User.find({_id: {$in:chatPatnersID}}).select(["-password", "-email"]);
 
