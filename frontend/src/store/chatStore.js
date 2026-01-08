@@ -37,12 +37,14 @@ export const useChatStore = create((set, get)=>({
     },
 
     getAllChatPatners: async ()=>{
-        set({isUsersLoading: false});
+        set({isUsersLoading: true});
         try {
             const res = await apiInstance.get('/messages/chats');
             set({chats: res.data})
         } catch (error) {
             toast.error(error.response.data.message);
+        }finally{
+            set({isUsersLoading: false})
         }
     }
 }))

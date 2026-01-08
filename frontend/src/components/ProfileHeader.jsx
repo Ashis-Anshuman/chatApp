@@ -40,10 +40,10 @@ function ProfileHeader() {
 
           <button disabled={isUpdatingProfile} className='size-14 rounded-full relative group overflow-hidden ' onClick={() => fileInputRef.current.click()}>
           
-            {isUpdatingProfile ? <LoaderIcon size={16} className="ml-2 animate-spin inline-block"/> :<img src={selectedImage || authUser.profilePic || "/avatar.png"} alt="Profile Pic" className="size-full object-cover" />}
+            {isUpdatingProfile ? <LoaderIcon size={16} className="ml-2 animate-spin inline-block"/> : <img src={selectedImage || authUser.profilePic || "/avatar.png"} alt="Profile Pic" className="size-full object-cover" />}
 
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                <span className="text-white text-xs">Change</span>
+                <span className="text-white text-xs">{!isUpdatingProfile ? "Change" : ""}</span>
             </div>
 
           </button>
