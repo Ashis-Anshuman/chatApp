@@ -1,7 +1,8 @@
 import express from "express"
-import { signUp, login, logout, updateProfile, verifyOtp} from "../controller/authController.js"; 
+import { signUp, login, logout, updateProfile} from "../controller/authController.js"; 
 import {protectRoute} from "../middleware/authMiddleware.js";
 import { arcjetProtect } from "../middleware/arcjetMiddleware.js";
+import { verifyOtp } from "../controller/otpController.js";
 
 const router = express.Router();
 

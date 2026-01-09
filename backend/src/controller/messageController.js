@@ -7,7 +7,7 @@ export const getContacts = async (req, res)=>{
         const userId = req.user._id;
         const contact = await User.find({_id:{$ne:userId}}).select(["-password", "-email"]);
 
-        res.status(200).json({contact});
+        res.status(200).json(contact);
     } catch (error) {
         console.error("unable to fetch contact", error);
         res.status(500).json({message: "Internal server error"});
