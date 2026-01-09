@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 export const useChatStore = create((set, get)=>({
     chats: [],
     messages: [],
-    allContacts: [],
+    contacts: [],
     isUsersLoading: false,
     isChatsLoading: false,
     selectedUser: null,
@@ -28,7 +28,7 @@ export const useChatStore = create((set, get)=>({
         set({isUsersLoading: true});
         try {
             const res = await apiInstance.get('/messages/contacts');
-            set({allContacts: res.data});
+            set({contacts: res.data});
         } catch (error) {
             toast.error(error.response.data.message);
         }finally{
