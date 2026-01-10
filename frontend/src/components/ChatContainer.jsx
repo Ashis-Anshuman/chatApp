@@ -1,9 +1,11 @@
 import { MoreVertical, Paperclip, Send, Smile } from 'lucide-react'
 import React, { useState } from 'react'
+import { useChatStore } from '../store/chatStore'
 
 
 
 function ChatContainer() {
+  const {isSidebarOpen, setIsSidebarOpen} = useChatStore();
   return (
     <main className="flex-1 flex flex-col min-h-0 bg-slate-900/30 backdrop-blur-xl">
 
@@ -11,7 +13,7 @@ function ChatContainer() {
   <div className="h-14 sm:h-16 shrink-0 px-4 sm:px-6 flex items-center justify-between border-b border-slate-800">
   <div className="flex items-center gap-3">
     {/* Mobile menu / back button */}
-    <button className="md:hidden btn btn-ghost btn-xs text-slate-400">
+    <button onClick={()=>setIsSidebarOpen(true)} className="md:hidden btn btn-ghost btn-xs text-slate-400">
       ☰
     </button>
 
@@ -33,63 +35,30 @@ function ChatContainer() {
     <MoreVertical />
   </button>
 </div>
-  {/* <div className="h-16 shrink-0 px-6 flex items-center justify-between border-b border-slate-800">
-    <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500 font-bold">
-        U
-      </div>
-      <div>
-        <p className="text-white font-medium">Username</p>
-        <p className="text-xs text-green-500">● Online</p>
-      </div>
-    </div>
-
-    <button className="btn btn-ghost btn-sm text-slate-400">
-      <MoreVertical />
-    </button>
-  </div> */}
 
 
   {/* Messages */}
-  {/* <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-4"> */}
   <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4">
 
 
     {/* Incoming */}
     <div className="flex items-start gap-2 sm:gap-3">
-  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-700"></div>
-  <div className="bg-slate-800/70 rounded-2xl rounded-tl-none px-3 py-2 max-w-[85%] sm:max-w-md">
-    <p className="text-sm text-white">
-      Hey! Welcome to ChatApp 🚀
-    </p>
-  </div>
-</div>
-
-    {/* <div className="flex items-start gap-3">
-      <div className="w-8 h-8 rounded-full bg-slate-700"></div>
-      <div className="bg-slate-800/70 rounded-2xl rounded-tl-none px-4 py-2 max-w-md">
+      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-700"></div>
+      <div className="bg-slate-800/70 rounded-2xl rounded-tl-none px-3 py-2 max-w-[85%] sm:max-w-md">
         <p className="text-sm text-white">
           Hey! Welcome to ChatApp 🚀
         </p>
       </div>
-    </div> */}
+    </div>
 
     {/* Outgoing */}
     <div className="flex justify-end">
-  <div className="bg-blue-600/80 rounded-2xl rounded-tr-none px-3 py-2 max-w-[85%] sm:max-w-md">
-    <p className="text-sm text-white">
-      Thanks! This UI looks awesome 😎
-    </p>
-  </div>
-</div>
-
-    {/* <div className="flex justify-end">
-      <div className="bg-blue-600/80 rounded-2xl rounded-tr-none px-4 py-2 max-w-md">
+      <div className="bg-blue-600/80 rounded-2xl rounded-tr-none px-3 py-2 max-w-[85%] sm:max-w-md">
         <p className="text-sm text-white">
           Thanks! This UI looks awesome 😎
         </p>
       </div>
-    </div> */}
+    </div>
 
   </div>
 

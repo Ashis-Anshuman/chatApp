@@ -16,15 +16,31 @@ import ChatsList from "../components/ChatsList";
 
 
 const ChatPage = () => {
-  const {selectedUser, activeTab} = useChatStore();
+  const {selectedUser, activeTab, isSidebarOpen, setIsSidebarOpen} = useChatStore();
 
 
   return (
     <div className="h-[95vh] w-full max-w-[99%] flex overflow-hidden backdrop-blur-xl">
 
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+      
       {/* ===== LEFT SIDEBAR ===== */}
-      <aside className="w-80 shrink-0 hidden md:flex flex-col bg-slate-900/60 border-r border-slate-800">
-
+      {/* <aside className="w-80 shrink-0 hidden md:flex flex-col bg-slate-900/60 border-r border-slate-800"> */}
+      <aside
+        className={`
+          fixed md:static z-40
+          w-80 h-full
+          bg-slate-900/90 border-r border-slate-800
+          transform transition-transform duration-300
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
+      >
           <ProfileHeader />
           <ActiveTabSwitch />
        
