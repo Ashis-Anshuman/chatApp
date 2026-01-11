@@ -7,7 +7,7 @@ export const useChatStore = create((set, get)=>({
     messages: [],
     contacts: [],
     isUsersLoading: false,
-    isChatsLoading: false,
+    isMessagesLoading: false,
     selectedUser: null,
     activeTab: "chats",
     isSidebarOpen: false,
@@ -54,7 +54,9 @@ export const useChatStore = create((set, get)=>({
     },
 
     getMessageById: async (id)=>{
+        set({isMessagesLoading: true});
         try {
+            console.log(id);
             const res = await apiInstance.get(`/messages/${id}`);
             set({messages: res.data});
 
@@ -62,6 +64,8 @@ export const useChatStore = create((set, get)=>({
         } catch (error) {
             toast.error(error.response.data.message || "Can't find your messages");
             console.error("can't find messages", error);
+        }finally{
+            set({isMessagesLoading: false});
         }
     }
 }))
