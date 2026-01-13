@@ -1,11 +1,7 @@
-import React from 'react'
-import {LoaderIcon} from 'lucide-react'
 
 function PageLoader() {
   return (
-    // <div className='flex justify-center items-center h-screen'>
-    //   <LoaderIcon className='size-10 animate-spin' />
-    // </div>
+    
     <div className="h-[95vh] w-full max-w-[99%] flex overflow-hidden animate-pulse">
 
       {/* ===== LEFT SIDEBAR ===== */}

@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useChatStore } from '../store/chatStore';
 import UsersLoadingSkeleton from './UsersLoadingSkeleton';
 
-// const users = [
-//   { id: 1, name: "Olivia Miller", online: true },
-//   { id: 2, name: "Sophia Davis", online: false },
-//   { id: 3, name: "William Clark", online: true },
-//   { id: 4, name: "John Doe", online: false }
-// ];
-
 function ChatsList() {
-//  const [selectedChat, setSelectedChat] = useState(null);
  const {getAllChatPatners, isUsersLoading, chats, selectedUser, setSelectedUser} =  useChatStore();
 
  useEffect(()=>{

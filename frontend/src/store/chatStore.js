@@ -56,16 +56,23 @@ export const useChatStore = create((set, get)=>({
     getMessageById: async (id)=>{
         set({isMessagesLoading: true});
         try {
-            console.log(id);
             const res = await apiInstance.get(`/messages/${id}`);
             set({messages: res.data});
 
-            toast.success("Your messages are here");
+            toast.success("Chat as you please");
         } catch (error) {
-            toast.error(error.response.data.message || "Can't find your messages");
+            toast.error(error?.response?.data?.message || "Unable to load");
             console.error("can't find messages", error);
         }finally{
             set({isMessagesLoading: false});
+        }
+    },
+
+    sendMessage: async (id , data)=>{
+        try {
+            const res = apiInstance.post(`/messages/send/${id}`, data);
+        } catch (error) {
+            
         }
     }
 }))

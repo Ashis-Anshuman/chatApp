@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import { Volume2, LogOut, VolumeX, LoaderIcon } from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 import { useUserAuthStore } from '../store/userAuthStore';
