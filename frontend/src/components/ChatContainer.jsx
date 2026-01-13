@@ -16,7 +16,7 @@ function ChatContainer() {
     getMessageById(selectedUser._id);
   },[selectedUser, getMessageById])
 
-  if(isMessagesLoading){return <MessageLoadingSkeleton/>}
+  // if(isMessagesLoading){return <MessageLoadingSkeleton/>}
   return (
     <main className="flex-1 flex flex-col min-h-0 bg-slate-900/30 backdrop-blur-xl">
 
@@ -40,7 +40,7 @@ function ChatContainer() {
             ))}
           </div>
         )
-        : 
+        : isMessagesLoading ? <MessageLoadingSkeleton/> :
         (<NoChat name={selectedUser.fullName}/>)}
 
       </div>

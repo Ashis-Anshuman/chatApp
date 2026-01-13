@@ -53,33 +53,61 @@
 
 // export default MessageInputBar
 
+import { useRef, useState } from "react";
 import { Camera, Send, Smile } from "lucide-react";
+import { useChatStore } from "../store/chatStore";
+
 
 function MessageInputBar() {
+  const imageInputRef = useRef(null);
+  const [inputText, setInputText] = useState("");
+  const [inputImg, setInputImg] = useState(null);
+  const {isSoundEnabled, sendMessage, selectedUser} = useChatStore();
+
+  const handelImage = (e)=> {
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {setInputImg(reader.result)}
+    reader.readAsDataURL(file);
+  }
+
+  const handelSendMessage = (e)=>{
+    e.preventDefault();
+    sendMessage(selectedUser._id , {
+      text: inputText.trim(),
+      image: inputImg
+    })
+    setInputText("");
+    setInputImg(null);
+  }
+
   return (
     <div className="shrink-0 p-3 sm:p-4 border-t border-slate-800">
-      <form className="flex items-center gap-2 sm:gap-3">
+      <form onSubmit={handelSendMessage} className="flex items-center gap-2 sm:gap-3">
         {/* INPUT WRAPPER */}
         <div className="relative flex-1">
 
-          {/* Left icon */}
-          <input type="file" className="hidden" />
-          <button
+          <input type="file" accept="image/*" className="hidden" ref={imageInputRef} onChange={handelImage}/>
+
+          <button onClick={()=> imageInputRef.current.click()} type="button"
             className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
           >
             <Camera size={16} />
           </button>
 
           {/* Right icon */}
-          <button
+          {/* <button
             className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
           >
             <Smile size={16} />
-          </button>
+          </button> */}
 
           {/* Input */}
           <input
             type="text"
+            value={inputText}
             placeholder="Type a message..."
             className="
               input w-full
@@ -87,11 +115,12 @@ function MessageInputBar() {
               text-white text-sm
               pl-10 pr-10
             "
+            onChange={(e)=> setInputText(e.target.value)}
           />
         </div>
 
         {/* Send button */}
-        <button className="btn btn-primary btn-sm sm:btn-md bg-blue-600 hover:bg-blue-500 border-none">
+        <button type="submit" className="btn btn-primary btn-sm sm:btn-md bg-blue-600 hover:bg-blue-500 border-none">
           <Send size={16} />
         </button>
 
