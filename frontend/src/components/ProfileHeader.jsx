@@ -69,6 +69,7 @@ function ProfileHeader() {
 
           </button>
         </div>
+        
         <div className="tooltip tooltip-top" data-tip="Logout">
           <button onClick={handelLogout} className="text-red-600 hover:text-red-400 transition-colors">
             <LogOut size={16} />

@@ -1,18 +1,12 @@
-import React, { useState } from "react";
 import ProfileHeader from "../components/ProfileHeader";
 import ActiveTabSwitch from "../components/ActiveTabSwitch";
 import DefaultChatContainer from "../components/DefaultChatContainer";
-import ChatList from "../components/ChatsList";
 import ContactList from "../components/ContactList";
 import ChatContainer from "../components/ChatContainer";
-import {
-  MessageCircle,
-  Search,
-  LogOut,
-  Volume2
-} from "lucide-react";
+import {Search} from "lucide-react";
 import { useChatStore } from "../store/chatStore";
 import ChatsList from "../components/ChatsList";
+import BorderAnimation from "../components/BorderAnimation";
 
 
 const ChatPage = () => {
@@ -20,7 +14,8 @@ const ChatPage = () => {
 
 
   return (
-    <div className="h-[95vh] w-full max-w-[99%] flex overflow-hidden backdrop-blur-xl">
+    <BorderAnimation>
+    <div className="relative h-[95vh] w-full max-w-full flex overflow-hidden backdrop-blur-xl ">
 
       {isSidebarOpen && (
         <div
@@ -29,8 +24,7 @@ const ChatPage = () => {
         />
       )}
       
-      {/* ===== LEFT SIDEBAR ===== */}
-      {/* <aside className="w-80 shrink-0 hidden md:flex flex-col bg-slate-900/60 border-r border-slate-800"> */}
+      {/* LEFT SIDEBAR */}
       <aside
         className={`
           fixed md:static z-40
@@ -72,6 +66,7 @@ const ChatPage = () => {
         {selectedUser ? <ChatContainer /> : <DefaultChatContainer />}
        </div>
     </div>
+   </BorderAnimation>
   );
 };
 

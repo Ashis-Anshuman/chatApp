@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import React, { useEffect} from 'react'
 import { useChatStore } from '../store/chatStore'
 import MessageLoadingSkeleton from './MessageLoadingSkeleton';
 import ChatHeader from './ChatHeader';
@@ -53,4 +53,4 @@ function ChatContainer() {
   )
 }
 
-export default ChatContainer
+export default React.memo(ChatContainer);

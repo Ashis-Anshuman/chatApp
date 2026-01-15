@@ -71,9 +71,9 @@ export const useChatStore = create((set, get)=>({
     sendMessage: async (id , data)=>{
         try {
             const res = await apiInstance.post(`/messages/send/${id}`, data);
-            set({messages: messages.concat(res.data)})
+            // set({messages: messages.concat(res.data)})
         } catch (error) {
-            set({messages: messages});
+            // set({messages: messages});
             toast.error(error.response?.data?.message || "Somthing went wrong");
             console.error("error in send message", error);
         }

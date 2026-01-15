@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {useChatStore} from '../store/chatStore'
 import UsersLoadingSkeleton from './UsersLoadingSkeleton';
 
@@ -41,4 +41,4 @@ function ContanctList() {
   )
 }
 
-export default ContanctList
+export default React.memo(ContanctList);
