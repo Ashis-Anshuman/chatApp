@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useChatStore } from '../store/chatStore'
 import { XIcon, Menu } from 'lucide-react';
 
@@ -14,6 +14,7 @@ function ChatHeader() {
 
         return ()=> window.removeEventListener("keydown", handelEscKey);
     },[setSelectedUser]);
+
   return (
     <div className="h-14 sm:h-16 shrink-0 px-4 sm:px-6 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center gap-3">
@@ -44,4 +45,4 @@ function ChatHeader() {
   )
 }
 
-export default ChatHeader
+export default React.memo(ChatHeader);

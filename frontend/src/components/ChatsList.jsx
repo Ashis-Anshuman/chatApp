@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { startTransition, useEffect } from 'react'
 import { useChatStore } from '../store/chatStore';
 import UsersLoadingSkeleton from './UsersLoadingSkeleton';
 
@@ -6,7 +6,9 @@ function ChatsList() {
  const {getAllChatPatners, isUsersLoading, chats, selectedUser, setSelectedUser} =  useChatStore();
 
  useEffect(()=>{
-  getAllChatPatners();
+  startTransition(()=>{
+    getAllChatPatners();
+  })
  },[getAllChatPatners])
 
  if(isUsersLoading){return <UsersLoadingSkeleton/>}

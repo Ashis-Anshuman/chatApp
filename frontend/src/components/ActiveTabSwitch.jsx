@@ -1,7 +1,12 @@
 import { useChatStore } from '../store/chatStore';
 
 function ActiveTabSwitch() {
-  const { setActiveTab, activeTab } = useChatStore();
+  // const { setActiveTab, activeTab } = useChatStore((s) =>({
+  //   setActiveTab: s.setActiveTab,
+  //   activeTab: s.activeTab
+  // }));
+  const setActiveTab = useChatStore(s => s.setActiveTab);
+  const activeTab = useChatStore(s => s.activeTab);
 
   const handelTabClick = (e) =>{
     setActiveTab(e.target.innerText.toLowerCase());

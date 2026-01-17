@@ -1,6 +1,8 @@
 import { MessageCircle } from 'lucide-react';
+import { useChatStore } from '../store/chatStore';
 
 function DefaultChatContainer() {
+  const setIsSidebarOpen = useChatStore(s =>s.setIsSidebarOpen);
   return (
     <div className="flex flex-col items-center justify-center text-center text-slate-400 h-full bg-slate-900/40">
       <div className="flex justify-center mb-4">
@@ -16,6 +18,17 @@ function DefaultChatContainer() {
       <p className="text-sm text-slate-500 mt-1 max-w-sm">
         Choose a contact from the sidebar to start chatting or continue a previous conversation.
       </p>
+
+       <button onClick={()=>setIsSidebarOpen(true)}
+        className="
+          mt-4
+          btn btn-primary btn-sm
+          bg-blue-600 hover:bg-blue-500 border-none
+          md:hidden
+        "
+      >
+        Open Chats
+      </button>
     </div>
 
   )

@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, { startTransition, useEffect} from 'react'
 import { useChatStore } from '../store/chatStore'
 import MessageLoadingSkeleton from './MessageLoadingSkeleton';
 import ChatHeader from './ChatHeader';
@@ -10,10 +10,14 @@ import MessageInputBar from './MessageInputBar';
 
 function ChatContainer() {
   const {selectedUser, isMessagesLoading, getMessageById, messages} = useChatStore();
-  const {authUser} = useUserAuthStore();
+  // const {authUser} = useUserAuthStore();
+  const authUser = useUserAuthStore((s)=>s.authUser);
 
   useEffect(()=>{
-    getMessageById(selectedUser._id);
+    if(!selectedUser)return;
+    startTransition(()=>{
+      getMessageById(selectedUser._id);
+    })
   },[selectedUser, getMessageById])
 
   // if(isMessagesLoading){return <MessageLoadingSkeleton/>}
@@ -25,16 +29,22 @@ function ChatContainer() {
       {/* Messages */}
       <div className="flex-1 px-6 overflow-y-auto py-8">
         {messages.length > 0 && !isMessagesLoading ? (
-          <div className='max-w-6xl mx-auto space-y-2'>
+          <div className='max-w-6xl mx-auto space-y-1'>
             {messages.map((msg) => (
               <div key={msg._id} className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}>
                 <div className={`chat-bubble relative ${msg.senderId === authUser._id ? "bg-blue-500 text-slate-200": "bg-slate-800 text-slate-200"}`}>
 
                   {msg.image && (<img src={msg.image} alt='shared image' className='rounded-lg h-48 object-cover'/>)}
                   {msg.text && (<p className="mt-2">{msg.text}</p>)}
+                  {/* <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
+                    
+                  </p> */}
                 </div>
                   <p className='chat-footer opacity-50'>
-                    {new Date(msg.createdAt).toISOString().slice(11,16)}
+                    {new Date(msg.createdAt).toLocaleTimeString(undefined, {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
               </div>
             ))}
