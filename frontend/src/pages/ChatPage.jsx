@@ -14,8 +14,8 @@ const ChatPage = () => {
 
 
   return (
-    <BorderAnimation>
-    <div className="relative h-[95vh] w-full max-w-full flex overflow-hidden backdrop-blur-xl ">
+    <div className="h-[95vh] w-full max-w-[96%] flex overflow-hidden backdrop-blur-xl">
+      <BorderAnimation>
 
       {isSidebarOpen && (
         <div
@@ -65,8 +65,8 @@ const ChatPage = () => {
       <div className="flex-1 flex flex-col bg-slate-950/30 backdrop-blur-xl">
         {selectedUser ? <ChatContainer /> : <DefaultChatContainer />}
        </div>
-    </div>
    </BorderAnimation>
+    </div>
   );
 };
 
