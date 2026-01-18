@@ -86,7 +86,7 @@ export const sendMessage = async (req, res)=>{
 
         const save = await newMessage.save();
 
-        res.status(200).json(receiverId);
+        res.status(200).json(save);
 
     } catch (error) {
         console.error("Unable to send message", error);
