@@ -28,7 +28,7 @@ export const useChatStore = create((set, get)=>({
         set({activeTab: tab});
     },
 
-    setSelectedUser: (selectedUser) => set({ selectedUser }),
+    setSelectedUser: (selectedUser) => set({ selectedUser, isSidebarOpen: false}),
 
     getAllContacts: async ()=>{
         set({isUsersLoading: true});
