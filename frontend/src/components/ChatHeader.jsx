@@ -3,17 +3,17 @@ import { useChatStore } from '../store/chatStore'
 import { XIcon, Menu } from 'lucide-react';
 
 function ChatHeader() {
-    const {selectedUser, setSelectedUser, setIsSidebarOpen } = useChatStore();
+  const {selectedUser, setSelectedUser, setIsSidebarOpen } = useChatStore();
 
-    useEffect(()=>{
-        const handelEscKey = (event)=>{
-            if(event.key === "Escape"){setSelectedUser(null)};
-        }
+  useEffect(()=>{
+    const handelEscKey = (event)=>{
+      if(event.key === "Escape"){setSelectedUser(null)};
+    }
 
-        window.addEventListener("keydown", handelEscKey);
+    window.addEventListener("keydown", handelEscKey);
 
-        return ()=> window.removeEventListener("keydown", handelEscKey);
-    },[setSelectedUser]);
+    return ()=> window.removeEventListener("keydown", handelEscKey);
+  },[setSelectedUser]);
 
   return (
     <div className="h-14 sm:h-16 shrink-0 px-4 sm:px-6 flex items-center justify-between border-b border-slate-800">

@@ -86,9 +86,9 @@ export const login = async (req, res)=>{
                 if(!isMatch){
                     return res.status(401).json({message: "Incorrect email or password"})
                 }
-                if(!loginUser.isEmailVerified){
-                    return res.status(400).json({message: "You are not a Verified User"});
-                }
+                // if(!loginUser.isEmailVerified){
+                //     return res.status(400).json({message: "You are not a Verified User"});
+                // }
                 generateToken(loginUser._id, res);
 
                 return res.status(200).json({

@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 import { apiInstance } from '../lib/axios';
 import toast from 'react-hot-toast';
+import { useUserAuthStore } from './userAuthStore';
 
 export const useChatStore = create((set, get)=>({
     chats: [],
@@ -70,6 +71,19 @@ export const useChatStore = create((set, get)=>({
 
     sendMessage: async (data)=>{
         const {selectedUser, messages} = get();
+        const {authUser} = useUserAuthStore.getState();
+
+        const tempId = `temp-${Date.now()}`;
+        const tempMessage = {
+            _id: tempId,
+            senderId: authUser._id,
+            receverId: selectedUser._id,
+            text: data.text,
+            image: data.image,
+            createdAt: new Date().toISOString()
+        }
+        set({messages: [...messages, tempMessage]});
+        
         try {
             const res = await apiInstance.post(`/messages/send/${selectedUser._id}`, data);
             set({messages: messages.concat(res.data)})

@@ -7,29 +7,33 @@ function MessageInputBar() {
   const imageInputRef = useRef(null);
   const [inputText, setInputText] = useState("");
   const [inputImg, setInputImg] = useState(null);
-  // const {isSoundEnabled, sendMessage} = useChatStore();
   const sendMessage = useChatStore((s)=>s.sendMessage);
+  // const isSoundEnabled = useChatStore(s => s.isSoundEnabled);
 
-  const handelImage = useCallback((e)=> {
+  const handelImage = (e)=> {
     const file = e.target.files[0];
     if(!file) return;
 
     const reader = new FileReader();
     reader.onload = () => {setInputImg(reader.result)}
     reader.readAsDataURL(file);
-  },[]);
+  };
 
-  const handelSendMessage = useCallback((e)=>{
+  const handelSendMessage = (e)=>{
     e.preventDefault();
+
     if(!inputText.trim() && !inputImg) return;
+    // if(isSoundEnabled){}
     sendMessage({
       text: inputText.trim(),
       image: inputImg
     })
+
     setInputText("");
     setInputImg(null);
     if(imageInputRef.current){imageInputRef.current.value = ""};
-  },[inputText, inputImg, sendMessage]);
+
+  };
 
   const removeImg = ()=>{
     setInputImg(null);
@@ -85,7 +89,7 @@ function MessageInputBar() {
         </div>
 
         {/* Send button */}
-        <button type="submit" className="btn btn-primary btn-sm sm:btn-md bg-blue-600 hover:bg-blue-500 border-none">
+        <button type="submit" disabled={!inputText && !inputImg} className="btn btn-primary btn-sm sm:btn-md bg-blue-600 hover:bg-blue-500 border-none">
           <Send size={16} />
         </button>
 

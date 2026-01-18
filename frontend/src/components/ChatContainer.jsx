@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect} from 'react'
+import React, { startTransition, useEffect, useRef } from 'react'
 import { useChatStore } from '../store/chatStore'
 import MessageLoadingSkeleton from './MessageLoadingSkeleton';
 import ChatHeader from './ChatHeader';
@@ -12,15 +12,21 @@ function ChatContainer() {
   const {selectedUser, isMessagesLoading, getMessageById, messages} = useChatStore();
   // const {authUser} = useUserAuthStore();
   const authUser = useUserAuthStore((s)=>s.authUser);
+  const messageEndRef = useRef(null);
 
   useEffect(()=>{
-    if(!selectedUser)return;
+    if(!selectedUser._id)return;
     startTransition(()=>{
       getMessageById(selectedUser._id);
-    })
-  },[selectedUser, getMessageById])
+    });
+  },[selectedUser, getMessageById]);
 
-  // if(isMessagesLoading){return <MessageLoadingSkeleton/>}
+  useEffect(() => {
+    if (messageEndRef.current && messages) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <main className="flex-1 flex flex-col min-h-0 bg-slate-900/30 backdrop-blur-xl">
 
@@ -35,7 +41,7 @@ function ChatContainer() {
                 <div className={`chat-bubble relative ${msg.senderId === authUser._id ? "bg-blue-500 text-slate-200": "bg-slate-800 text-slate-200"}`}>
 
                   {msg.image && (<img src={msg.image} alt='shared image' className='rounded-lg h-48 object-cover'/>)}
-                  {msg.text && (<p className="mt-2">{msg.text}</p>)}
+                  {msg.text && <p className="mt-2">{msg.text}</p>}
                   {/* <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
                     
                   </p> */}
@@ -48,6 +54,7 @@ function ChatContainer() {
                   </p>
               </div>
             ))}
+            <div ref={messageEndRef} />
           </div>
         )
         : isMessagesLoading ? <MessageLoadingSkeleton/> :
