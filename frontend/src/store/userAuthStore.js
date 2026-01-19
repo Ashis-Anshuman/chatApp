@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import {apiInstance} from '../lib/axios';
 import toast from 'react-hot-toast';
+import { io } from 'socket.io-client';
 
-// const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
-export const useUserAuthStore = create((set)=>({
+export const useUserAuthStore = create((set, get)=>({
     authUser: null,
     pendingEmail: null,
     isCheckingAuth: true,
@@ -13,6 +14,8 @@ export const useUserAuthStore = create((set)=>({
     showOtp: false,
     isValidingOtp: false,
     isUpdatingProfile: false,
+    socket: null,
+    onlineUsers: [],
 
     checkAuth: async ()=>{
         try {
@@ -20,6 +23,7 @@ export const useUserAuthStore = create((set)=>({
             set({
                 authUser: res.data
             })
+            get().connectSocket();
         } catch (error) {
             console.error("Error checking auth:", error);
             set({authUser: null});
@@ -38,6 +42,8 @@ export const useUserAuthStore = create((set)=>({
             set({showOtp:true});
             toast.success("Verify your Email");
             
+            get().connectSocket();
+
         } catch (error) {
             toast.error(error.response.data.message);
         }finally{
@@ -52,6 +58,9 @@ export const useUserAuthStore = create((set)=>({
             set({authUser: res.data});
 
             toast.success("Login successfully!");
+
+            get().connectSocket();
+
         } catch (error) {
             toast.error(error.response.data.message);
         }finally{
@@ -64,6 +73,7 @@ export const useUserAuthStore = create((set)=>({
             await apiInstance.post('/auth/logout');
             set({authUser:null});
 
+            get().disConnectSocket();
             toast.success("Logout Successfully");
 
         } catch (error) {
@@ -98,7 +108,28 @@ export const useUserAuthStore = create((set)=>({
         } catch (error) {
             toast.error(error.response.data.message);
         }finally{
-            set({isValidingOtp: false});
+            set({isValidingOtp: false,
+                pendingEmail:null
+            });
         }
+    },
+
+    connectSocket: ()=>{
+        const {authUser} = get();
+        if(!authUser || get().socket?.connected) return;
+
+        const socket = io(BASE_URL, {withCredentials:true});
+
+        socket.connect();
+        set({socket});
+
+        socket.on("online-users", (userIds)=>{
+            set({onlineUsers: userIds});
+        });
+    },
+
+    disConnectSocket: ()=>{
+        if(get().socket?.connected){ get().socket.disconnect()};
+        set({socket: null});
     }
 }));

@@ -5,21 +5,18 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routers/authRoute.js";
 import messageRouter from "./routers/messageRouter.js";
 import path from "path";
-import {dbConnect} from "./lib/database.js";
 import cors from "cors";
+import {app, server} from "./lib/socketIo.js";
+import {dbConnect} from "./lib/database.js";
 
 dotenv.config();
 
 const PORT = process.env.PORT||3000;
-const app = express();
+
 app.use(express.json({limit: "5mb"}));
 app.use(cors({origin: process.env.CLIENT_URL, credentials: true}))
 app.use(cookieParser());
 const __dirname = path.resolve();
-
-app.get("/ass", (req, res)=>{
-    res.send("fdjjdh"); 
-})
 
 app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
@@ -34,7 +31,7 @@ if(process.env.NODE_ENV === "production"){
     })
 }
 
-app.listen(PORT, ()=>{
+server.listen(PORT, ()=>{
     dbConnect();
     console.log("app listen on the port "+PORT);
 })

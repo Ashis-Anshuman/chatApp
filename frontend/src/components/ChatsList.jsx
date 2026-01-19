@@ -1,9 +1,11 @@
 import React, { startTransition, useEffect } from 'react'
 import { useChatStore } from '../store/chatStore';
 import UsersLoadingSkeleton from './UsersLoadingSkeleton';
+import { useUserAuthStore } from '../store/userAuthStore';
 
 function ChatsList() {
  const {getAllChatPatners, isUsersLoading, chats, selectedUser, setSelectedUser} =  useChatStore();
+ const onlineUsers = useUserAuthStore(s => s.onlineUsers);
 
  useEffect(()=>{
   startTransition(()=>{
@@ -26,7 +28,7 @@ function ChatsList() {
               }`}
             >
             <div className='flex items-center gap-3'>
-              <div className='avatar online'>
+              <div className={`avatar ${onlineUsers.includes(user._id)? "online": "offline"}`}>
                 <div className="size-12 rounded-full">
                 <img src={user.profilePic || "/avatar.png"} alt={user.fullName} />
               </div>

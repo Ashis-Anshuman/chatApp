@@ -24,6 +24,7 @@
     "mongoose": "^8.10.1",
     "node-cron": "^4.2.1",
     "otp-generator": "^4.0.1",
-    "resend": "^6.5.2"
+    "resend": "^6.5.2",
+    "socket.io": "^4.8.1"
   }
 }
