@@ -10,9 +10,6 @@ dotenv.config();
 
 export const signUp = async (req, res)=>{
     const {fullName, email, password} = req.body;
-    // console.log(fullName);
-    // console.log(email);
-    // console.log(password);
 
     try {
         if(!fullName || !email || !password){
@@ -30,13 +27,11 @@ export const signUp = async (req, res)=>{
 
         const existingUser = await User.findOne({email:email});
         if(existingUser){
-            if(!existingUser.isEmailVerified){
-                await sendOtp(existingUser);
+            // if(!existingUser.isEmailVerified){
+            //     await sendOtp(existingUser);
+            //     return res.status(200).json({message: "Otp is resend to your email"});
+            // }
 
-                // if(!isOtpSend){return res.status(400).json({message: "Unable to resend OTP"})};
-
-                return res.status(200).json({message: "Otp is resend to your email"});
-            }
             return res.status(400).json({message : "Existing user"});
         }
 
@@ -50,11 +45,18 @@ export const signUp = async (req, res)=>{
         });
         if(newUser){
             const savedUser = await newUser.save();
-            const isOtpSend = await sendOtp(savedUser);
+            // const isOtpSend = await sendOtp(savedUser);
+            // if(!isOtpSend){return res.status(400).json({message: "Something went wrong"})};        //For send otp to verify email
+            // return res.status(201).json({message:"Verify OTP"});
 
-            if(!isOtpSend){return res.status(400).json({message: "Something went wrong"})};
-            
-            return res.status(201).json({message:"Verify OTP"});
+            generateToken(newUser._id, res);
+
+            res.status(201).json({
+                message: "User has created",
+                _id: newUser._id,
+                fullName: newUser.fullName,
+                email: newUser.email
+            });
 
         }else{
             return res.status(400).json({message:"Invalid user data"})

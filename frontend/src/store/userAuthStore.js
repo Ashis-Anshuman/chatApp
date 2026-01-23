@@ -38,9 +38,12 @@ export const useUserAuthStore = create((set, get)=>({
         });
         try {
             const res = await apiInstance.post('/auth/signUp', data);
-            console.log(data);
-            set({showOtp:true});
-            toast.success("Verify your Email");
+            set({authUser: res.data});
+
+            // set({showOtp:true});
+            // toast.success("Verify your Email");
+            
+            toast.success("Signup successfull");
             
             get().connectSocket();
 

@@ -92,7 +92,7 @@ const SignUpPage = () => {
             </div>
           </div>
 
-          {!showOtp ? (
+          {!false ? (         //instead of false use showOtp from store to toggle between forms
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Full Name */}
               <div className="form-control">
