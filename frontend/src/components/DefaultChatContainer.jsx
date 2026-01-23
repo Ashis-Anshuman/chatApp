@@ -1,8 +1,10 @@
+import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 
 function DefaultChatContainer() {
   const setIsSidebarOpen = useChatStore(s =>s.setIsSidebarOpen);
+
   return (
     <div className="flex flex-col items-center justify-center text-center text-slate-400 h-full bg-slate-900/40">
       <div className="flex justify-center mb-4">
@@ -34,4 +36,4 @@ function DefaultChatContainer() {
   )
 }
 
-export default DefaultChatContainer
+export default React.memo(DefaultChatContainer);

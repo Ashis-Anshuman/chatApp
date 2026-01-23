@@ -9,7 +9,7 @@ import MessageInputBar from './MessageInputBar';
 
 
 function ChatContainer() {
-  const {selectedUser, isMessagesLoading, getMessageById, messages} = useChatStore();
+  const {selectedUser, isMessagesLoading, getMessageById, messages, subscribeToMessage, unSubscribeToMessage} = useChatStore();
   // const {authUser} = useUserAuthStore();
   const authUser = useUserAuthStore((s)=>s.authUser);
   const messageEndRef = useRef(null);
@@ -19,6 +19,10 @@ function ChatContainer() {
     startTransition(()=>{
       getMessageById(selectedUser._id);
     });
+
+    subscribeToMessage();
+
+    return ()=> unSubscribeToMessage();
   },[selectedUser, getMessageById]);
 
   useEffect(() => {

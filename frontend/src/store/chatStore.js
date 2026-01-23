@@ -17,7 +17,7 @@ export const useChatStore = create((set, get)=>({
     toogleSound: ()=>{
         localStorage.setItem("isSoundEnabled", !get().isSoundEnabled);
         set({isSoundEnabled: !get().isSoundEnabled});
-        // console.log(isSoundEnabled);
+        // console.log(get().isSoundEnabled);
     },
 
     setIsSidebarOpen: (value)=>{
@@ -92,5 +92,30 @@ export const useChatStore = create((set, get)=>({
             toast.error(error.response?.data?.message || "Somthing went wrong");
             console.error("error in send message", error);
         }
+    },
+
+    subscribeToMessage: ()=>{
+        const selectedUser = get().selectedUser;
+        if(!selectedUser) return;
+
+        const socket = useUserAuthStore.getState().socket;
+
+        socket.on("newMessage", (newMessage)=>{
+            if(selectedUser._id !== newMessage.senderId) return;
+            const msg = get().messages;
+            set({messages: [...msg,newMessage]});
+
+            if(get().isSoundEnabled){
+                const notificationSound = new Audio("/sounds/notification.mp3");
+                
+                notificationSound.currentTime = 0;
+                notificationSound.play().catch((error)=> console.log("error in notificationSound", error));
+            };
+        });
+    },
+
+    unSubscribeToMessage: ()=>{
+        const socket = useUserAuthStore.getState().socket;
+        socket.off("newMessage");
     }
 }))

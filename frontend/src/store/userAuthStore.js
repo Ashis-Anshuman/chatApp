@@ -115,7 +115,7 @@ export const useUserAuthStore = create((set, get)=>({
     },
 
     connectSocket: ()=>{
-        const {authUser} = get();
+        const authUser = get().authUser;
         if(!authUser || get().socket?.connected) return;
 
         const socket = io(BASE_URL, {withCredentials:true});
@@ -130,6 +130,6 @@ export const useUserAuthStore = create((set, get)=>({
 
     disConnectSocket: ()=>{
         if(get().socket?.connected){ get().socket.disconnect()};
-        set({socket: null});
+        set({socket: null, onlineUsers: []});
     }
 }));
