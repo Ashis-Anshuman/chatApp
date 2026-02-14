@@ -8,6 +8,7 @@ import path from "path";
 import cors from "cors";
 import {app, server} from "./lib/socketIo.js";
 import {dbConnect} from "./lib/database.js";
+import { cleanFakeUsers } from "./cron/cleanUnverifiedUser.js";
 
 dotenv.config();
 
@@ -33,5 +34,6 @@ if(process.env.NODE_ENV === "production"){
 
 server.listen(PORT, ()=>{
     dbConnect();
+    // cleanFakeUsers();
     console.log("app listen on the port "+PORT);
 })
