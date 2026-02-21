@@ -74,7 +74,7 @@ const LoginPage = () => {
           <div className="flex justify-between items-start mb-10">
             <div>
               <h3 className="text-2xl font-bold text-white tracking-tight">
-                System Login
+                Login to Nexus
               </h3>
               <p className="text-slate-500 text-sm">
                 Verify your credentials.

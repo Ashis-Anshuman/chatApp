@@ -61,7 +61,7 @@ const SignUpPage = () => {
             </div>
 
             <h2 className="text-4xl font-black text-white leading-tight uppercase italic">
-              Join the <br /> <span className="text-blue-500">chatapp</span>
+              Join the <br /> <span className="text-blue-500">NEXUS</span>
             </h2>
 
             <p className="mt-4 text-slate-400 text-sm leading-relaxed">
