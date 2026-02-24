@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import { Volume2, LogOut, VolumeX, LoaderIcon } from 'lucide-react';
+import { Volume2, LogOut, VolumeX, LoaderIcon, XIcon } from 'lucide-react';
 import { useChatStore } from '../store/chatStore';
 import { useUserAuthStore } from '../store/userAuthStore';
 
@@ -7,7 +7,7 @@ const mouseClickSound = new Audio('/sounds/mouse-click.mp3');
 
 function ProfileHeader() {
   const {logout, authUser, updateProfile, isUpdatingProfile} = useUserAuthStore();
-  const {toogleSound, isSoundEnabled} = useChatStore();
+  const {toogleSound, isSoundEnabled, setIsSidebarOpen} = useChatStore();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const fileInputRef = useRef(null);
@@ -58,6 +58,13 @@ function ProfileHeader() {
       </div>
 
       <div className="flex gap-2">
+        <div className='tooltip tooltip-top md:hidden' data-tip="Close">
+          <button className="text-slate-400 hover:text-slate-200 transition-colors"
+          onClick={()=>{setIsSidebarOpen(false);}}>
+            <XIcon size={16}/>
+          </button>
+        </div>
+
         <div className='tooltip tooltip-top' data-tip="Mute/Unmute">
           <button className="text-slate-400 hover:text-slate-200 transition-colors" 
           onClick={()=>{
@@ -75,6 +82,7 @@ function ProfileHeader() {
             <LogOut size={16} />
           </button>
         </div>
+
       </div>
 
       
